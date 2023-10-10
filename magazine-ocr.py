@@ -421,6 +421,12 @@ def main(args, cmdstr):
     ##############################
     #   Step 7 - Clean up our temporary directory mess
     #   Unless we're in debug mode >= 2, in which case leave it for debugging
+    if args['inputDelete'] is True:
+        archiveDirName = os.path.join(outputDir, outputBaseName)
+        print("[CLEANUP]  Deleting source images")
+        for imgFile in sortedFiles:
+            os.remove(imgFile)
+
     if debugLvl < 2:
         print("[CLEANUP]  Removing temp files/directory")
 
@@ -437,7 +443,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a directory of scanned magazine pages into individual images")
     parser.add_argument('-i', nargs='?', default='./input/', dest='inputDir')
     parser.add_argument('-o', nargs='?', default='./conversion_output.pdf', dest='outputPdfName')
-    parser.add_argument('-a', default=True, dest='outputArchive', action=argparse.BooleanOptionalAction)
+    parser.add_argument('-a', default=False, dest='outputArchive', action='store_true')
+    parser.add_argument('-e', default=False, dest='inputDelete', action='store_true')
+
     parser.add_argument('-j', nargs='?', default='80', dest='jpegQuality' )
     parser.add_argument('-d', nargs='?', default='300', dest='dpi' )
     parser.add_argument('-s', nargs='?', default='name', dest='sort' )
