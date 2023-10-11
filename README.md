@@ -91,7 +91,7 @@ Current Options:
 
 fbfb - Short for "front, back, front, back" this is going to be typical for either dual-sided scanners (such as a Xerox Documate 4790) or duplex scanners (Epson WF-7820).  This expects that the magazine has been unbound and the first file will be the cover, the second file will be the back of the cover, the third file will be the front side of the first inside sheet, the fourth file will be the back side of the first inside sheet, etc.  It also assumes that there are two pages per scanned sheet, and the dividing line is in the middle of the image.
 
-fbfb - Short for "front, front, back, back" this would be used with single-sided scanning through an automatic document feeder (ADF).  Again, this assumes the magazine has been unbound.  However, it then assumes you scan all of one side of the magazine, and then you flip the whole stack over and scan all of the other sides.  This is useful on magazines that tend to jam or not feed when going through a duplexer mechanism on an ADF.
+ffbb - Short for "front, front, back, back" this would be used with single-sided scanning through an automatic document feeder (ADF).  Again, this assumes the magazine has been unbound.  However, it then assumes you scan all of one side of the magazine, and then you flip the whole stack over and scan all of the other sides.  This is useful on magazines that tend to jam or not feed when going through a duplexer mechanism on an ADF.
 
 Yes, I'll add more in the future, but for the moment that's what I needed so that's what exist.
 
