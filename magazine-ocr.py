@@ -122,7 +122,7 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
         algoText = "FFBB"
         totalPages = totalFiles * 2
         
-        pageMap = [{'srcFile':None, 'transforms':None, 'half':None } for i in range(0,totalPages)]
+        pageMap = [{'srcFile':None, 'transforms':None, 'srcHalf':None } for i in range(0,totalPages)]
         # Each page - source file, pre-transforms, left or right half
 
         for f in range(0, totalFiles):
@@ -162,7 +162,7 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
         algoText = "FRBR"
         totalPages = totalFiles * 2
         
-        pageMap = [{'srcFile':None, 'transforms':None, 'half':None } for i in range(0,totalPages)]
+        pageMap = [{'srcFile':None, 'transforms':None, 'srcHalf':None } for i in range(0,totalPages)]
         # Each page - source file, pre-transforms, left or right half
 
         for f in range(0, totalFiles):
