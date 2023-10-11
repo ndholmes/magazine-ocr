@@ -169,9 +169,6 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
             if f < totalFiles//2:
                 # This is a front page scan
                 p = int((2 * ((totalFiles/2) - f)) - 2)
-                print(p)
-                print(totalPages - p - 1)
-                print()
                 pageMap[p]['srcFile'] = files[f]
                 pageMap[p]['srcHalf'] = 'right'
                 pageMap[p]['transforms'] = frontTransforms + allTransforms
@@ -181,9 +178,6 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
             else:
                 # This is a back page scan
                 p = int(( (f - (totalFiles/2)) * 2) + 1)
-                print(p)
-                print(totalPages - p - 1)
-                print()
                 pageMap[p]['srcFile'] = files[f]
                 pageMap[p]['srcHalf'] = 'left'
                 pageMap[p]['transforms'] = backTransforms + allTransforms
