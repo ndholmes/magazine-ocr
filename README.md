@@ -93,6 +93,8 @@ fbfb - Short for "front, back, front, back" this is going to be typical for eith
 
 ffbb - Short for "front, front, back, back" this would be used with single-sided scanning through an automatic document feeder (ADF).  Again, this assumes the magazine has been unbound.  However, it then assumes you scan all of one side of the magazine, and then you flip the whole stack over and scan all of the other sides.  This is useful on magazines that tend to jam or not feed when going through a duplexer mechanism on an ADF.
 
+frbr - Same as "front, front, back, back" (ffbb), but with reversed page order.  This would be used in the same situation as ffbb, but on a dual-sided scanner than only has a working backside imager.
+
 Yes, I'll add more in the future, but for the moment that's what I needed so that's what exist.
 
 ## Transforms
