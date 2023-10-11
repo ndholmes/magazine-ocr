@@ -144,6 +144,53 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
                 pageMap[totalPages - p - 1]['srcHalf'] = 'right'
                 pageMap[totalPages - p - 1]['transforms'] = backTransforms + allTransforms
 
+    elif splitAlgorithm == 'frbr':
+        # This is for scanners that produce a scan of all the fronts, then all the backs, 
+        # of a de-bound magazine or book, but using only a backside sensor so the order 
+        # is reversed.
+        # File 0 (1F)  - Page halves [n/2-1:n+2]
+        # File 1 (2F)  - Page halves [n/2-3:n+4]
+        # File 2 (2F)  - Page halves [n/2-5:n+6]
+        # ...
+        # File x (xB)  - Page halves [n-4:n+5]
+        # File y (yB)  - Page halves [n-2:n+3]
+        # File z (zB)  - Page halves [n:n+1]
+        if totalFiles % 2 != 0:
+            print("ERROR: Have an odd number of scans, that doesn't work!");
+            sys.exit(2)
+
+        algoText = "FRBR"
+        totalPages = totalFiles * 2
+        
+        pageMap = [{'srcFile':None, 'transforms':None, 'half':None } for i in range(0,totalPages)]
+        # Each page - source file, pre-transforms, left or right half
+
+        for f in range(0, totalFiles):
+            if f < totalFiles//2:
+                # This is a front page scan
+                p = int((2 * ((totalFiles/2) - f)) - 2)
+                print(p)
+                print(totalPages - p - 1)
+                print()
+                pageMap[p]['srcFile'] = files[f]
+                pageMap[p]['srcHalf'] = 'right'
+                pageMap[p]['transforms'] = frontTransforms + allTransforms
+                pageMap[totalPages - p - 1]['srcFile'] = files[f]
+                pageMap[totalPages - p - 1]['srcHalf'] = 'left'
+                pageMap[totalPages - p - 1]['transforms'] = frontTransforms + allTransforms
+            else:
+                # This is a back page scan
+                p = int(( (f - (totalFiles/2)) * 2) + 1)
+                print(p)
+                print(totalPages - p - 1)
+                print()
+                pageMap[p]['srcFile'] = files[f]
+                pageMap[p]['srcHalf'] = 'left'
+                pageMap[p]['transforms'] = backTransforms + allTransforms
+                pageMap[totalPages - p - 1]['srcFile'] = files[f]
+                pageMap[totalPages - p - 1]['srcHalf'] = 'right'
+                pageMap[totalPages - p - 1]['transforms'] = backTransforms + allTransforms
+
     else:
         print("ERROR:  Unknown page split algorithm [%s], exiting..." % (splitAlgorithm))
         sys.exit(1)
