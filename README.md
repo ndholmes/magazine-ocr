@@ -63,6 +63,7 @@ python -m pip install -r requirements.txt
 | -e  |  N   | Delete source images upon successful completion.  Defaults to false                   |
 | -f  |  N   | File spec for input source images.  By default, jpg, png, and tif are searched.  This would be things like "*.GIF" to just grab all GIFs.  Is case sensitive. |
 | -j  |  N   | JPEG quality that should be used to save page images in PDF.  80 is default           |
+| -p  |  N   | Maximum number of processes to run simultaenously (omit to use all available CPUs)    |
 | -s  |  N   | Input file sort order - 'name' or 'date' - name is default                            |
 | -v  |  N   | Debug verbosity.  1 is informative.  2 leaves intermediate artifacts without cleaning up. |
 | -x  |  N   | Transforms to be performed on "front" side scans                                      |

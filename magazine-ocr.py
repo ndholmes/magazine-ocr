@@ -300,13 +300,17 @@ def createPageProcess(pageTuple):
     
     return (pageNum, pageFilename)
     
-def createPagesMultiprocess(debugLbl, pageMap, tmpWorkingDir):
+def createPagesMultiprocess(debugLbl, pageMap, tmpWorkingDir, maxProcs=None):
     print("[PAGE] Creating %d pages from source images - multithreaded" % (len(pageMap)))
     pageInputTupleList = []
     for pageNum, pageData in enumerate(pageMap):
         pageInputTupleList.append((debugLbl, tmpWorkingDir, pageNum, pageData))
     
-    pool = multiprocessing.Pool()
+    if maxProcs is not None:
+        pool = multiprocessing.Pool(maxProcs)
+    else:
+        pool = multiprocessing.Pool()
+
     pageResultTupleList = pool.map(createPageProcess, pageInputTupleList)
     
     for (pageNum, pageFilename) in pageResultTupleList:
@@ -361,15 +365,25 @@ def createPDF(debugLvl, pageMap, tmpWorkingDir, quality=80, dpi=300):
     
     return pdfFilename
 
-def ocrPDF(debugLvl, nonOcrPdfFilename, ocrPdfFilename):
+def ocrPDF(debugLvl, nonOcrPdfFilename, ocrPdfFilename, maxProcs = None):
     print("[OCR] Start")
-    ocrmypdf.ocr(nonOcrPdfFilename, ocrPdfFilename, output_type='pdfa', pdfa_image_compression='jpeg', jobs=os.cpu_count(), jpg_quality=80, deskew=True)
+
+    if maxProcs is None:
+        maxProcs = os.cpu_count()
+
+    ocrmypdf.ocr(nonOcrPdfFilename, ocrPdfFilename, output_type='pdfa', pdfa_image_compression='jpeg', jobs=maxProcs, jpg_quality=80, deskew=True)
+
     print("[OCR] Done")
     return ocrPdfFilename
 
 def main(args, cmdstr):
     debugLvl = int(args['debugVerbosity'])
-
+    maxProcs = args['procs']
+    
+    if maxProcs is not None:
+        maxProcs = max(1, min(os.cpu_count(), int(maxProcs)))
+        # Else just let maxProcs remain None and each component will figure out how many CPUs it wants to use
+    
     # Sanitize and sane-ify the output paths
     outputFilePath = args['outputPdfName']
 
@@ -419,7 +433,7 @@ def main(args, cmdstr):
     ##############################
     #   Step 3 - Actually generate page images from source files
     
-    createPagesMultiprocess(debugLvl, pageMap, tmpWorkingDir)
+    createPagesMultiprocess(debugLvl, pageMap, tmpWorkingDir, maxProcs)
     # This is the single-process version - probably remove?
     #createPages(pageMap, tmpWorkingDir)
 
@@ -432,7 +446,7 @@ def main(args, cmdstr):
     #   Step 5 - OCR the temp PDF and save to final destination
 
     outputPdfPath = os.path.join(outputDir, outputPdfName)
-    ocrPdfName = ocrPDF(debugLvl, nonOcrPdfName, outputPdfPath)
+    ocrPdfName = ocrPDF(debugLvl, nonOcrPdfName, outputPdfPath, maxProcs)
 
     ##############################
     #   Step 6 - Archive off build cmd and source images
@@ -492,7 +506,8 @@ if __name__ == "__main__":
     parser.add_argument('-s', nargs='?', default='name', dest='sort' )
     parser.add_argument('-f', nargs='?', default=None, dest='fileSpec' )
     parser.add_argument('-m', nargs='?', default=None, dest='split' )
-    
+    parser.add_argument('-p', nargs='?', default=None, dest='procs' )
+
     parser.add_argument('-v', nargs='?', default='0', dest='debugVerbosity' )
     parser.add_argument('-x', nargs='?', default=None, dest='frontPageTransforms' )
     parser.add_argument('-y', nargs='?', default=None, dest='backPageTransforms' )
