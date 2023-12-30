@@ -127,22 +127,13 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
 
         for f in range(0, totalFiles):
             p = f * 2   # Lower working page number is always fileNum * 2
-            if f < totalFiles//2:
-                # This is a front page scan
-                pageMap[p]['srcFile'] = files[f]
-                pageMap[p]['srcHalf'] = 'right'
-                pageMap[p]['transforms'] = frontTransforms + allTransforms
-                pageMap[totalPages - p - 1]['srcFile'] = files[f]
-                pageMap[totalPages - p - 1]['srcHalf'] = 'left'
-                pageMap[totalPages - p - 1]['transforms'] = frontTransforms + allTransforms
-            else:
-                # This is a back page scan
-                pageMap[p]['srcFile'] = files[f]
-                pageMap[p]['srcHalf'] = 'left'
-                pageMap[p]['transforms'] = backTransforms + allTransforms
-                pageMap[totalPages - p - 1]['srcFile'] = files[f]
-                pageMap[totalPages - p - 1]['srcHalf'] = 'right'
-                pageMap[totalPages - p - 1]['transforms'] = backTransforms + allTransforms
+            # This is a front page scan
+            pageMap[p]['srcFile'] = files[f]
+            pageMap[p]['srcHalf'] = 'right'
+            pageMap[p]['transforms'] = frontTransforms + allTransforms
+            pageMap[totalPages - p - 1]['srcFile'] = files[f]
+            pageMap[totalPages - p - 1]['srcHalf'] = 'left'
+            pageMap[totalPages - p - 1]['transforms'] = frontTransforms + allTransforms
 
     elif splitAlgorithm == 'frbr':
         # This is for scanners that produce a scan of all the fronts, then all the backs, 
