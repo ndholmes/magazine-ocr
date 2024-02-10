@@ -362,7 +362,7 @@ def ocrPDF(debugLvl, nonOcrPdfFilename, ocrPdfFilename, maxProcs = None):
     if maxProcs is None:
         maxProcs = os.cpu_count()
 
-    ocrmypdf.ocr(nonOcrPdfFilename, ocrPdfFilename, output_type='pdfa', pdfa_image_compression='jpeg', jobs=maxProcs, jpg_quality=80, deskew=True)
+    ocrmypdf.ocr(nonOcrPdfFilename, ocrPdfFilename, output_type='pdfa', pdfa_image_compression='jpeg', jobs=maxProcs, jpg_quality=80, deskew=False)
 
     print("[OCR] Done")
     return ocrPdfFilename
