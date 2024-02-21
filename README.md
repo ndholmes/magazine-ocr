@@ -96,6 +96,8 @@ ffbb - Short for "front, front, back, back" this would be used with single-sided
 
 frbr - Same as "front, front, back, back" (ffbb), but with reversed page order.  This would be used in the same situation as ffbb, but on a dual-sided scanner than only has a working backside imager.
 
+1234 - This is going for be for items which are scanned where each image is a single page, and they're in order.  Nothing will be split, but page 1, 3, 5, etc. are assumed to be "fronts" and 2, 4, 6, etc. are assumed to be "backs" for purposes of the transforms applied.
+
 Yes, I'll add more in the future, but for the moment that's what I needed so that's what exist.
 
 ## Transforms

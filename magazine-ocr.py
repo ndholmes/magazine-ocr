@@ -176,6 +176,31 @@ def buildPageMap(files, splitAlgorithm, frontTransforms, backTransforms, allTran
                 pageMap[totalPages - p - 1]['srcHalf'] = 'right'
                 pageMap[totalPages - p - 1]['transforms'] = backTransforms + allTransforms
 
+    elif splitAlgorithm == '1234':
+        algoText = "1234"
+
+        totalPages = totalFiles
+        
+        pageMap = [{'srcFile':None, 'transforms':None, 'srcHalf':None } for i in range(0,totalPages)]
+
+        # This is for scanners that produce a scan of the front, then the back, then the front, then the back, of
+        # a de-bound magazine or book, where EACH SCAN is only a SINGLE PAGE
+        # File 0 (1F)  - Page halves [0]
+        # File 1 (1B)  - Page halves [1]
+        # File 2 (2F)  - Page halves [2]
+        # File 3 (2B)  - Page halves [4]
+
+        for p in range(0, totalPages):
+            pageMap[p]['srcFile'] = files[p]
+            pageMap[p]['srcHalf'] = 'all'
+
+            if p % 2 == 0:
+                # This is a front page scan
+                pageMap[p]['transforms'] = frontTransforms + allTransforms
+            else:
+                # This is a back page scan
+                pageMap[p]['transforms'] = backTransforms + allTransforms
+
     else:
         print("ERROR:  Unknown page split algorithm [%s], exiting..." % (splitAlgorithm))
         sys.exit(1)
@@ -273,8 +298,8 @@ def createPageProcess(pageTuple):
         img = img.crop((0,0,width/2,height))
     elif pageData['srcHalf'] == 'right':
         img = img.crop((width/2,0,width,height))
-    elif page['srcHalf'] == 'all':
-        pageData  # do nothing, we're using the whole page
+    elif pageData['srcHalf'] == 'all':
+        pass  # do nothing, we're using the whole page
     else:
         print("ERROR:  Don't know what to do with srcHalf of [%s]" % (pageData['srcHalf']))
         sys.exit(3)
